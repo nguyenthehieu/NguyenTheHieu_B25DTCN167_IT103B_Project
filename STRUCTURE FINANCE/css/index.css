@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 200px;
+    background-color: #4338CA;
+    color: white;
+}
+
+header h3 {
+    font-weight: lighter;
+}
+
+.banner {
+    text-align: center;
+    background: #4F46E5;
+    color: white;
+    margin: 25px auto;
+    padding: 23px;
+    border-radius: 10px;
+    width: 730px;
+    height: 100px;
+}
+
+.banner p {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.banner h1 {
+    font-weight: lighter;
+    font-size: 24px;
+}
+.title {
+    text-align: center;
+    font-weight: lighter;
+    color: #4F46E5;
+    margin: 20px;
+
+}
+
+.cell {
+    text-align: center;
+    background: #ffffff;
+    margin: 25px auto;
+    padding: 23px;
+    border-radius: 10px;
+    width: 730px;
+}
+
+.cell label{
+    padding-right: 15px;
+}
+
+.cell button {
+    background-color: #3B82F6;
+    border: 0 white;
+    width: 50px;
+    height: 30px;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.cell input {
+    height: 30px;
+}
+
+.cell h3 {
+    color: #22C55E;
+    font-size: larger;
+    font-weight: lighter;
+    padding: 10px;
+;
+}
+
+footer {
+    background: #4338CA;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+@media (max-width: 1440px) {
+    header {
+        padding: 15px 100px; /* giảm padding */
+    }
+
+    .banner {
+        width: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px; /* sát lề mobile */
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .banner {
+        width: 90%; /* full gần màn hình */
+        height: auto; /* tránh bị bó */
+        padding: 20px;
+    }
+
+    .banner h1 {
+        font-size: 20px;
+    }
+
+    .banner p {
+        font-size: 14px;
+    }
+}
