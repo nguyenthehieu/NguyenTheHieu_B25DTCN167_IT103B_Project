@@ -23,6 +23,15 @@ header h3 {
     font-weight: lighter;
 }
 
+header p {
+    display: flex;
+    align-items: center;
+}
+
+header img{
+    margin-left: 5px;
+}
+
 .banner {
     display: flex;
     position: relative;
@@ -54,10 +63,9 @@ header h3 {
     color: white;
 }
 
-.choice a:hover {
+.choice .information {
     background-color: #4338CA;
     color: #ffffff;
-    transition: 0.5s;
 }
 
 .choice i {

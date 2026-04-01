@@ -9,6 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: whitesmoke;
+    
 }
 
 header {
@@ -19,10 +20,6 @@ header {
     color: white;
 }
 
-header h3 {
-    font-weight: lighter;
-}
-
 header p {
     display: flex;
     align-items: center;
@@ -30,6 +27,10 @@ header p {
 
 header img{
     margin-left: 5px;
+}
+
+header h3 {
+    font-weight: lighter;
 }
 
 .banner {
@@ -58,8 +59,12 @@ header img{
     border: 1px solid #4338CA;
     border-radius: 5px;
 }
+.information {
+    background-color: #4338CA;
+    color: white;
+}
 
-.choice .category {
+.choice .history {
     background-color: #4338CA;
     color: #ffffff;
 }
@@ -102,7 +107,7 @@ header img{
     margin: 25px auto;
     padding: 23px;
     border-radius: 10px;
-    width: 730px;
+    width: 768px;
 }
 
 .cell label{
@@ -128,111 +133,145 @@ header img{
     font-size: larger;
     font-weight: lighter;
     padding: 10px;
+;
 }
 
-form {
-    background: #ffffff;
-    margin: 25px auto;
-    padding: 23px;
-    border-radius: 10px;
-    width: 730px;
+.title-history {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: lighter;
+    width: 266px;
+    height: 38px;
 }
 
-.input-money {
-    margin: 10px 0;;
+.history-cell {
+    display: flex;
+    justify-content: space-between;
+    width: 768px;
+}
+
+.actions {
     display: flex;
     gap: 10px;
-    justify-content: space-around ;
+    margin-right: 35px;
 }
 
-.input-money select {
-    width: 258px;
-    height: 42px;
-    padding-left: 5px;
-    color: grey;
-    border: 1px solid gray;
-    border-radius: 5px;
+.actions .sort-btn {
+    width: 160px;
+    height: 38px;
+    background-color:#F9FAFB;
+    color: black;
+    border: 1px solid rgb(201, 201, 201);
+    text-align: left;
+    padding-left: 10px;
+    border-radius: 7px;
 }
 
-.input-money input {
-    width: 258px;
-    height: 42px;
-    padding: 5px;
-    border: 1px solid gray;
-    border-radius: 5px;
+.actions input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 159px;
+    height: 38px;
+    background-color:#F9FAFB;
+    color: black;
 }
 
-.input-money button {
-    width: 163px;
-    height: 42px;
-    background-color: #4F46E5;
-;
-    color: #ffffff;
-    border-radius: 5px;
-    border: 0px;
-    cursor: pointer;
-}
-
-.input-money button:hover {
-    background-color: #362ca2;
-    transition: 0.5s;
-}
-
-.outcomes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 2 cột */
-    margin: 20px 0;
-}
-
-.outcome-money {
-    display: flex;
-    border: 1px solid gray;
-    border-radius: 10px;
-    width: 212px;
-    height: 72px;
-    margin: 10px ;
-    padding: 10px;
-}
-
-.outcome-money i {
-    width: 50px;
-    height: 50px;
-    font-size: 40px;
-    border-radius: 5px;
-    border: 1px solid gray;
-    margin: 20px 10px;
-}
-
-.outcome-money p {
-    color: gray;
-    padding: 7px 0;
-}
-
-.control {
-    margin-left: auto; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.control button {
-    cursor: pointer;
-    font-size: 16px;
-    color: #000000;
-    background-color: white;
+.actions .search-btn {
+    background: #1D4ED8;
     border: none;
-    transition: 0.2s;
-}
-
-.control .icon-larger {
-    font-size: 25px;
-}
-
-footer {
-    background: #4338CA;
     color: white;
-    text-align: center;
-    padding: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f9fafb;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    font-weight: lighter;
+    color:#374151;
+}
+
+tbody tr {
+    border-top: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+    background: #f3f4f6;
+}
+
+td i {
+    cursor: pointer;
+    color: #000000;
+    font-weight: bolder;
+    padding-left: 15px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #374151;
+}
+
+.pagination button.active {
+    background: #4f46e5;
+    color: white;
+    border: none;
+}
+
+.warning {
+    background-color: #333E5A;
+    color: white;
+    width: 320px;
+    height: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    position: fixed;
+    top: 70px;  
+    right: 20px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.warning h3 {
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+.warning p {
+    font-size: 12px;
+    padding-top: 15px;
+    margin-left: 10px;
+}
+
+.warning img {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
 }
 
 @media (max-width: 1440px) {
