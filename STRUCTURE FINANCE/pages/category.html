@@ -55,15 +55,15 @@
         <form action="">
             <p><i class="bi bi-briefcase-fill"></i> Quản lý danh mục (Theo tháng)</p>
             <div class="input-money">
-                <select name="" id="">
+                <select name="" id="categoryName">
                     <option value="">Tên danh mục</option>
-                    <option value="">Tiền tích lũy</option>
-                    <option value="">Tiền chi tiêu</option>
+                    <option value="Tiền tích lũy">Tiền tích lũy</option>
+                    <option value="Tiền chi tiêu">Tiền chi tiêu</option>
                 </select>
-                <input type="number" id="" placeholder="Giới hạn (VND)">
-                <button>Thêm danh mục</button>
+                <input type="number" id="categoryMoney" placeholder="Giới hạn (VND)">
+                <button type="button" id="addCategoryBtn">Thêm danh mục</button>
             </div>
-            <div class="outcomes">
+            <div class="outcomes" id="categoryList">
                 <div class="outcome-money">
                     <div>
                         <i class="bi bi-currency-dollar"></i>
