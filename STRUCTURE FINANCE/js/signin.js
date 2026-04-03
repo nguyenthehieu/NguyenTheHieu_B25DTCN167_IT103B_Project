@@ -3,6 +3,12 @@ const passwordInput = document.getElementById("password");
 const emailError = document.getElementById("emailError");
 const passwordError = document.getElementById("passwordError");
 const button = document.querySelector("button");
+const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+const currentUser = userLogin;
+
+if (currentUser) {
+    window.location.href = "../pages/index.html";
+}
 
 function clearError(input, errorElement) {
     input.classList.remove("input-error");
@@ -14,6 +20,7 @@ function setError(input, errorElement, message) {
     errorElement.innerText = message;
 }
 
+// ===== LOGIN =====
 button.addEventListener("click", function () {
     let email = emailInput.value.trim();
     let password = passwordInput.value.trim();
@@ -22,29 +29,47 @@ button.addEventListener("click", function () {
     clearError(emailInput, emailError);
     clearError(passwordInput, passwordError);
 
+    // validate
     if (email === "") {
-        setError(emailInput, emailError, "Email không được để trống");
+        setError(emailInput, emailError, "Email cannot be left blank.");
         isValid = false;
     }
 
     if (password === "") {
-        setError(passwordInput, passwordError, "Mật khẩu không được để trống");
+        setError(passwordInput, passwordError, "Password cannot be left blank.");
         isValid = false;
     }
 
     if (!isValid) return;
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    // ===== LẤY DANH SÁCH USER =====
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    if (!user || user.email !== email) {
-        setError(emailInput, emailError, "Email không đúng");
+    // ===== TÌM USER =====
+    const foundUser = users.find(user => user.email === email);
+
+    if (!foundUser) {
+        setError(emailInput, emailError, "Email isn't correct");
         return;
     }
 
-    if (user.password !== password) {
-        setError(passwordInput, passwordError, "Mật khẩu không đúng");
+    if (foundUser.password !== password) {
+        setError(passwordInput, passwordError, "Password isn't correct");
         return;
     }
 
+    // ===== LƯU LOGIN =====
+    localStorage.setItem("userLogin", JSON.stringify(foundUser));
+
+    // ===== CHUYỂN TRANG =====
     window.location.href = "../pages/index.html";
+});
+
+// ===== CLEAR ERROR =====
+emailInput.addEventListener("input", function () {
+    clearError(emailInput, emailError);
+});
+
+passwordInput.addEventListener("input", function () {
+    clearError(passwordInput, passwordError);
 });

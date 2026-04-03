@@ -23,13 +23,20 @@ header h3 {
     font-weight: lighter;
 }
 
-header p {
+header select {
     display: flex;
     align-items: center;
+    padding: 5px;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 15px;
 }
 
-header img{
-    margin-left: 5px;
+header select option {
+    background-color: white;
+    color: black;
+    padding: 5px;
 }
 
 .banner {
@@ -58,6 +65,7 @@ header img{
     border: 1px solid #4338CA;
     border-radius: 5px;
 }
+
 .information {
     background-color: #4338CA;
     color: white;
@@ -92,6 +100,7 @@ header img{
     font-weight: lighter;
     font-size: 24px;
 }
+
 .title {
     text-align: center;
     font-weight: lighter;
@@ -109,7 +118,7 @@ header img{
     width: 730px;
 }
 
-.cell label{
+.cell label {
     padding-right: 15px;
 }
 
@@ -132,19 +141,57 @@ header img{
     font-size: larger;
     font-weight: lighter;
     padding: 10px;
-;
+    ;
+}
+
+.budget-box {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    justify-content: center;   
+    align-items: center;    
+    gap: 8px 10px;
+}
+
+.budget-box label {
+    grid-column: 1;
+    grid-row: 1;
+    margin-left: 150px;
+}
+
+.budget-box input {
+    grid-column: 2;
+    grid-row: 1;
+    height: 30px;
+    width: 200px;
+}
+
+.budget-box button {
+    grid-column: 3;
+    grid-row: 1;
+    margin-right: 90px;
+}
+
+.budget-box .error {
+    grid-column: 2;
+    grid-row: 2;
+    color: red;
+    font-size: 13px;
 }
 
 .form-infor {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 cột */
-    grid-template-rows: repeat(5, auto);   /* 5 dòng */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 cột */
+    grid-template-rows: repeat(5, auto);
+    /* 5 dòng */
     gap: 10px;
     margin: 25px auto;
     padding: 25px;
     width: 730px;
 
 }
+
 .form-infor span {
     color: red;
 }
@@ -177,35 +224,203 @@ footer {
     padding: 20px;
 }
 
+#toast {
+    position: fixed;
+    top: 30%;
+    right: 34%;
+}
+
+.toast {
+    background: #fff;
+    padding: 16px;
+    border-radius: 10px;
+    width: 586px;
+    height: 276;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    animation: slideIn 0.5s ease-out;
+}
+
+.toast hr {
+    color: rgba(187, 187, 187, 0.444);
+    width: 518px;
+}
+
+.toast img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.toast h3 {
+    margin-bottom: 10px;
+    font-weight: lighter;
+    font-size: 25px;
+}
+
+.toast p {
+    margin-bottom: 12px;
+    color: #667085;
+}
+
+.toast-actions {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.toast button {
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.confirm-btn {
+    background: #FBB01A;
+    color: white;
+    border: none;
+    width: 60px;
+    height: 44px;
+}
+
+.cancel-btn {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid gray;
+    width: 60px;
+    height: 44px;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.success-toast {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: #22C55E;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(120%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
 @media (max-width: 1440px) {
     header {
-        padding: 15px 100px; /* giảm padding */
+        padding: 15px 60px;
+    }
+
+    .main-title,
+    .cell,
+    .form-infor {
+        width: 90%;
+    }
+
+    .main-title {
+        height: auto;
     }
 
     .banner {
-        width: 600px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .choice {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
 
 @media (max-width: 768px) {
     header {
-        padding: 15px 20px; /* sát lề mobile */
+        padding: 15px 20px;
         flex-direction: column;
+        align-items: center;
         gap: 10px;
         text-align: center;
     }
 
-    .banner {
-        width: 90%; /* full gần màn hình */
-        height: auto; /* tránh bị bó */
+
+    .choice {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .choice a {
+        width: 90%;
+        justify-content: center;
+    }
+
+    .main-title {
+        width: 95%;
+        height: auto;
         padding: 20px;
     }
 
-    .banner h1 {
-        font-size: 20px;
+    .main-title h1 {
+        font-size: 18px;
     }
 
-    .banner p {
-        font-size: 14px;
+    .main-title p {
+        font-size: 13px;
+    }
+
+
+    .cell {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .cell input {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .cell button {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    /* FORM */
+    .form-infor {
+        grid-template-columns: 1fr;
+        width: 95%;
+    }
+
+    .form-infor button {
+        width: 100%;
+    }
+
+    #toast {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        right: auto;
+    }
+
+    .toast {
+        width: 90%;
     }
 }

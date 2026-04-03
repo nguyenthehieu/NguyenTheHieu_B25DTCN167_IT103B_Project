@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Information</title>
+    <title>Quản Lý Tài Chính</title>
     <link rel="stylesheet" href="../css/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -13,10 +13,10 @@
     <main>
         <header>
             <h3>📒 Tài Chính Cá Nhân K25_Rikkei</h3>
-            <p>
-                Tài khoản
-                <img src="../assets/icon/Vector.png" alt="" id="logoutBtn">
-            </p>
+            <select name="" id="accountSelect">
+                <option value="">Tài khoản</option>
+                <option value="logout">Đăng xuất</option>
+            </select>
         </header>
         <div class="banner">
             <div class="choice">
@@ -44,13 +44,15 @@
 
         <div class="cell">
             <label for=""> 📅 Chọn tháng:</label>
-            <input type="month" name="" id="">
+            <input type="month" name="" id="month">
+            <p class="error" id="monthError"></p>
         </div>
 
-        <div class="cell">
+        <div class="cell budget-box">
             <label for="">💰 Ngân sách tháng:</label>
-            <input type="number" id="" placeholder=" VD: 5000000">
-            <button>Lưu</button>
+            <input type="number" id="money" step="1000" min="0" placeholder=" VD: 5000000">
+            <p class="error" id="moneyError"></p>
+            <button id="saveBtn">Lưu</button>
         </div>
 
         <h1 class="title">Quản Lý Thông tin Cá nhân</h1>
@@ -75,6 +77,9 @@
     <footer>
         © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu !
     </footer>
+
+    <!-- Toast -->
+    <div id="toast"></div>
 
     <script src="../js/index.js"></script>
 </body>

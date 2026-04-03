@@ -1,3 +1,4 @@
+let users = JSON.parse(localStorage.getItem("users")) || [];
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -58,9 +59,39 @@ button.addEventListener("click", function () {
     }
 
     if (isValid) {
-        const user = { email, password };
-        localStorage.setItem("user", JSON.stringify(user));
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-        window.location.href = "../pages/signin.html";
+    let isExist = users.some(user => user.email === email);
+    if (isExist) {
+        setError(emailInput, emailError, "Email already exists");
+        return;
     }
+
+    const newUser = {
+        id: users.length > 0 ? users[users.length - 1].id + 1 : 1,
+        email,
+        password,
+        gender: "true",
+        status: "true"
+    };
+
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // chuyển sang đăng nhập
+    window.location.href = "../pages/signin.html";
+}
+});
+
+// nhập lại thì xóa lỗi
+emailInput.addEventListener("input", function () {
+    clearError(emailInput, emailError);
+});
+
+passwordInput.addEventListener("input", function () {
+    clearError(passwordInput, passwordError);
+});
+
+confirmPasswordInput.addEventListener("input", function () {
+    clearError(confirmPasswordInput, confirmError);
 });

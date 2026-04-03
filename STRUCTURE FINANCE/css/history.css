@@ -20,13 +20,20 @@ header {
     color: white;
 }
 
-header p {
+header select {
     display: flex;
     align-items: center;
+    padding: 5px;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 15px;
 }
 
-header img{
-    margin-left: 5px;
+header select option {
+    background-color: white;
+    color: black;
+    padding: 5px;
 }
 
 header h3 {
