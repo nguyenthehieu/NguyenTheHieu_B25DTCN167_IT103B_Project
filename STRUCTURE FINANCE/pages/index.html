@@ -44,7 +44,7 @@
 
         <div class="cell">
             <label for=""> 📅 Chọn tháng:</label>
-            <input type="month" name="" id="month">
+            <input type="month" name="" id="monthIn">
             <p class="error" id="monthError"></p>
         </div>
 
@@ -55,6 +55,30 @@
             <button id="saveBtn">Lưu</button>
         </div>
 
+        <div class="cell" id="summaryBox" style="display:none;">
+            <p class="summary-title">📊 Tổng quan tháng</p>
+
+            <div class="summary-row">
+                <span>Ngân sách:</span>
+                <span id="budgetText">0 VND</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Đã chi:</span>
+                <span id="spentText">0 VND</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Đã phân bổ:</span>
+                <span id="allocatedText">0 VND</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Chưa phân bổ:</span>
+                <span id="remainText">0 VND</span>
+            </div>
+        </div>
+        
         <h1 class="title">Quản Lý Thông tin Cá nhân</h1>
         <form action="" class="form-infor">
             <label for="name">Name <span>*</span></label>

@@ -20,7 +20,6 @@ function setError(input, errorElement, message) {
     errorElement.innerText = message;
 }
 
-// ===== LOGIN =====
 button.addEventListener("click", function () {
     let email = emailInput.value.trim();
     let password = passwordInput.value.trim();
@@ -42,10 +41,11 @@ button.addEventListener("click", function () {
 
     if (!isValid) return;
 
-    // ===== LẤY DANH SÁCH USER =====
+    // lấy danh sách user
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // ===== TÌM USER =====
+    // tìm user
+    
     const foundUser = users.find(user => user.email === email);
 
     if (!foundUser) {
@@ -58,10 +58,9 @@ button.addEventListener("click", function () {
         return;
     }
 
-    // ===== LƯU LOGIN =====
+    // lưu thông tin user đã đăng nhập
     localStorage.setItem("userLogin", JSON.stringify(foundUser));
 
-    // ===== CHUYỂN TRANG =====
     window.location.href = "../pages/index.html";
 });
 

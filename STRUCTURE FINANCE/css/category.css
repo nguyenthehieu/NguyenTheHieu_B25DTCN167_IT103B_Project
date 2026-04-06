@@ -242,6 +242,90 @@ footer {
     padding: 20px;
 }
 
+#toast {
+    position: fixed;
+    top: 30%;
+    right: 34%;
+}
+
+.toast {
+    background: #fff;
+    padding: 16px;
+    border-radius: 10px;
+    width: 586px;
+    height: 276;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    animation: slideIn 0.5s ease-out;
+}
+
+.toast hr {
+    color: rgba(187, 187, 187, 0.444);
+    width: 518px;
+}
+
+.toast img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.toast h3 {
+    margin-bottom: 10px;
+    font-weight: lighter;
+    font-size: 25px;
+}
+
+.toast p {
+    margin-bottom: 12px;
+    color: #667085;
+}
+
+.toast-actions {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.toast button {
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.confirm-btn {
+    background: #DC2626;
+    color: white;
+    border: none;
+    width: 60px;
+    height: 44px;
+}
+
+.cancel-btn {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid gray;
+    width: 60px;
+    height: 44px;
+}
+
+.no-categories {
+    color: #667085;
+    font-size: 15px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(120%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 @media (max-width: 1440px) {
     header {
         padding: 15px 100px; /* giảm padding */

@@ -12,10 +12,10 @@
 <body>
     <main>
         <header>
-            <h3>📒 Tài Chính Cá Nhân K25_Rikkei</h3>
-            <select name="" id="">
+            <h3>Tài Chính Cá Nhân K25_Rikkei</h3>
+            <select name="" id="accountSelect">
                 <option value="">Tài khoản</option>
-                <option value="logout" id="logoutBtn">Đăng xuất</option>
+                <option value="logout">Đăng xuất</option>
             </select>
         </header>
         <div class="banner">
@@ -25,16 +25,12 @@
                 <a href="./history.html" class="history"><i class="bi bi-clock-history"></i> History</a>
             </div>
             <div class="main-title">
-                <h1>
-                    🎯 Kiểm soát chi tiêu thông minh
-                </h1>
-                <p>
-                    Theo dõi ngân sách và thu chi hằng tháng dễ dàng
-                </p>
+                <h1>Kiểm soát chi tiêu thông minh</h1>
+                <p>Theo dõi ngân sách và thu chi hàng tháng dễ dàng</p>
             </div>
         </div>
 
-        <h1 class="title">📊 Quản Lý Tài Chính Cá Nhân</h1>
+        <h1 class="title">Quản Lý Tài Chính Cá Nhân</h1>
 
         <div class="cell">
             <p>Số tiền còn lại</p>
@@ -42,24 +38,29 @@
         </div>
 
         <div class="cell">
-            <label for=""> 📅 Chọn tháng:</label>
-            <input type="month" name="" id="">
+            <label for="monthIn">Chọn tháng:</label>
+            <input type="month" name="" id="monthIn">
         </div>
 
         <div class="cell">
-            <label for="">💰 Ngân sách tháng:</label>
-            <input type="number" id="" placeholder=" VD: 5000000">
-            <button>Lưu</button>
+            <div class="cell-adddeal">
+                <input type="number" placeholder="Số tiền" id="amountInput" class="input-Money">
+                <select id="categorySelect">
+                    <option value="">Danh mục chi tiêu</option>
+                </select>
+                <input type="text" placeholder="Ghi chú" id="noteInput" class="note-Input">
+                <button id="addTransactionBtn">Thêm</button>
+            </div>
         </div>
 
         <div class="cell">
             <div class="history-cell">
-                <h2 class="title-history">🧾 Lịch sử giao dịch (theo tháng)</h2>
+                <h2 class="title-history">Lịch sử giao dịch (theo tháng)</h2>
 
                 <div class="actions">
-                    <button class="sort-btn">Sắp xếp theo giá</button>
-                    <input type="text" placeholder="tìm nội dung">
-                    <button class="search-btn">
+                    <button class="sort-btn" id="sortBtn" type="button">So tien: giam dan</button>
+                    <input type="text" placeholder="Tìm nội dung" id="searchInput">
+                    <button class="search-btn" id="searchBtn" type="button">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
@@ -77,68 +78,20 @@
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Tiền đi chơi</td>
-                        <td>2.000 $</td>
-                        <td>Đi chơi sapa</td>
-                        <td><i class="bi bi-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Tiền đi học</td>
-                        <td>1.500 $</td>
-                        <td>Học online</td>
-                        <td><i class="bi bi-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Tiền cà phê</td>
-                        <td>1.500 $</td>
-                        <td>Đi uống nước</td>
-                        <td><i class="bi bi-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Tiền cho con</td>
-                        <td>1.500 $</td>
-                        <td>Mua bỉm sữa</td>
-                        <td><i class="bi bi-trash"></i></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Tiền ăn</td>
-                        <td>1.500 $</td>
-                        <td>Ăn trưa</td>
-                        <td><i class="bi bi-trash"></i></td>
-                    </tr>
                 </tbody>
             </table>
 
-            <div class="pagination">
-                <button><i class="bi bi-arrow-left"></i></button>
-                <button>1</button>
-                <button>2</button>
-                <button class="active">3</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>7</button>
-                <button><i class="bi bi-arrow-right"></i></button>
-            </div>
-
+            <div class="pagination" id="pagination"></div>
         </div>
     </main>
     <footer>
-        © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu !
+        © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu!
     </footer>
 
-    <div class="warning">
-        <h3><img src="../assets/icon/warning.png" alt=""> Cảnh báo tài chính</h3>
-        <p>️ Danh mục "tiền ăn " đã vượt giới hạn: 1,060 / 1,000 $</p>
-    </div>
+    <div id="warningToastContainer"></div>
+    <div id="toast"></div>
 
-    <script src="../js/history.js"></script>
+    <script src="../js/history.page.js"></script>
 </body>
 
 </html>

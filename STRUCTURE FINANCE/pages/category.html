@@ -13,9 +13,10 @@
     <main>
         <header>
             <h3>📒 Tài Chính Cá Nhân K25_Rikkei</h3>
-            <select name="" id="">
+            <select name="" id="accountSelect">
                 <option value="">Tài khoản</option>
-                <option value="logout" id="logoutBtn">Đăng xuất</option>
+                <option value="logout">Đăng xuất</option>
+            </select>
             </select>
         </header>
         <div class="banner">
@@ -43,24 +44,21 @@
 
         <div class="cell">
             <label for=""> 📅 Chọn tháng:</label>
-            <input type="month" name="" id="">
-        </div>
-
-        <div class="cell">
-            <label for="">💰 Ngân sách tháng:</label>
-            <input type="number" id="" placeholder=" VD: 5000000">
-            <button>Lưu</button>
+            <input type="month" name="" id="monthIn">
         </div>
 
         <form action="">
             <p><i class="bi bi-briefcase-fill"></i> Quản lý danh mục (Theo tháng)</p>
             <div class="input-money">
-                <select name="" id="categoryName">
+                <select id="categoryName">
                     <option value="">Tên danh mục</option>
-                    <option value="Tiền tích lũy">Tiền tích lũy</option>
-                    <option value="Tiền chi tiêu">Tiền chi tiêu</option>
+                    <option value="Tiền đi chơi">Tiền đi chơi</option>
+                    <option value="Tiền đi học">Tiền đi học</option>
+                    <option value="Tiền cà phê">Tiền cà phê</option>
+                    <option value="Tiền cho con">Tiền cho con</option>
+                    <option value="Tiền ăn">Tiền ăn</option>
                 </select>
-                <input type="number" id="categoryMoney" placeholder="Giới hạn (VND)">
+                <input type="number" id="categoryMoney" placeholder="Giới hạn (VND)" step="1000" min="0">
                 <button type="button" id="addCategoryBtn">Thêm danh mục</button>
             </div>
             <div class="outcomes" id="categoryList">
@@ -137,6 +135,8 @@
     <footer>
         © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu !
     </footer>
+
+    <div id="toast"></div>
 
     <script src="../js/category.js"></script>
 </body>

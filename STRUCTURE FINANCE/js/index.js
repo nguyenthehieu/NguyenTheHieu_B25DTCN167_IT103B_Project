@@ -1,10 +1,11 @@
+// ================== KIỂM TRA ĐĂNG NHẬP ==================
 const userLogin = JSON.parse(localStorage.getItem("userLogin"));
-const currentUser = userLogin;
 
-if (!currentUser) {
+if (!userLogin) {
     window.location.href = "../pages/signin.html";
 }
 
+// ================== LOGOUT ==================
 const selectBox = document.querySelector("header select");
 const toastContainer = document.getElementById("toast");
 
@@ -20,40 +21,69 @@ function showLogoutToast() {
     toast.className = "toast";
 
     toast.innerHTML = `
-       <img src="../assets/icon/image 2.png" alt="">
+        <img src="../assets/icon/image 2.png" alt="">
         <h3>Xác nhận</h3>
-        <p>Bạn có chắc chắn muốn xóa tài khoản này không?</p>
+        <p>Bạn có chắc chắn muốn đăng xuất không?</p>
         <hr>
         <div class="toast-actions">
             <button class="cancel-btn">Hủy</button>
-            <button class="confirm-btn">Xóa</button>
-            
+            <button class="confirm-btn">Đăng xuất</button>
         </div>
     `;
 
     toastContainer.appendChild(toast);
 
-    // Đồng ý
     toast.querySelector(".confirm-btn").onclick = () => {
         localStorage.removeItem("userLogin");
         window.location.href = "../pages/signin.html";
-        currentUser = null;
     };
 
-    // Hủy
     toast.querySelector(".cancel-btn").onclick = () => {
         toast.remove();
     };
 }
 
-const monthInput = document.getElementById("month");
+// ================== DOM ==================
+const monthInput = document.getElementById("monthIn");
 const moneyInput = document.getElementById("money");
 const saveBtn = document.getElementById("saveBtn");
-const moneyDisplay = document.querySelector('.cell h3');
+const moneyDisplay = document.querySelector(".cell h3");
+
 const monthError = document.getElementById("monthError");
 const moneyError = document.getElementById("moneyError");
 
-// xóa lỗi khi nhập lại
+// summary
+const summaryBox = document.getElementById("summaryBox");
+const budgetText = document.getElementById("budgetText");
+const spentText = document.getElementById("spentText");
+const allocatedText = document.getElementById("allocatedText");
+const remainText = document.getElementById("remainText");
+const SELECTED_MONTH_KEY = "selectedMonth";
+
+function getDefaultMonth() {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function getSelectedMonth() {
+    return localStorage.getItem(SELECTED_MONTH_KEY) || getDefaultMonth();
+}
+
+function setSelectedMonth(month) {
+    localStorage.setItem(SELECTED_MONTH_KEY, month);
+}
+
+function getMonthlyCategories() {
+    return JSON.parse(localStorage.getItem("monthlyCategories")) || [];
+}
+
+function getAllocatedBudget(month) {
+    return getMonthlyCategories()
+        .filter(item => item.month === month && item.userId === userLogin.id)
+        .reduce((total, item) => total + Number(item.budget || 0), 0);
+}
+
+// ================== CLEAR ERROR ==================
 monthInput.addEventListener("input", () => {
     monthError.innerText = "";
 });
@@ -62,24 +92,56 @@ moneyInput.addEventListener("input", () => {
     moneyError.innerText = "";
 });
 
-// load dữ liệu khi chọn tháng
+// ================== RENDER SUMMARY ==================
+function renderSummary(month) {
+    const data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
+    const userData = data[userLogin.id] || {};
+
+    if (!userData[month]) {
+        summaryBox.style.display = "none";
+        return;
+    }
+
+    const budget = userData[month].budget;
+    const spent = userData[month].spent || 0;
+    const allocated = getAllocatedBudget(month);
+    const remain = budget - allocated;
+
+    budgetText.innerText = budget.toLocaleString();
+    spentText.innerText = spent.toLocaleString();
+    allocatedText.innerText = allocated.toLocaleString();
+    remainText.innerText = remain.toLocaleString();
+
+    summaryBox.style.display = "block";
+}
+
+// ================== LOAD DATA ==================
 function loadData() {
     const month = monthInput.value;
     const data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
+    const userData = data[userLogin.id] || {};
 
-    if (data[month]) {
-        const money = Number(data[month]);
-        moneyInput.value = money;
-        moneyDisplay.innerText = money.toLocaleString() + " VND";
+    if (userData[month]) {
+        const budget = userData[month].budget;
+        const remain = budget - getAllocatedBudget(month);
+
+        moneyInput.value = budget;
+        moneyDisplay.innerText = remain.toLocaleString() + " VND";
+
+        renderSummary(month);
     } else {
         moneyInput.value = "";
         moneyDisplay.innerText = "0 VND";
+        summaryBox.style.display = "none";
     }
 }
 
-monthInput.addEventListener("change", loadData);
+monthInput.addEventListener("change", () => {
+    setSelectedMonth(monthInput.value);
+    loadData();
+});
 
-// toast thành công
+// ================== TOAST ==================
 function showSuccessToast(message) {
     const toast = document.createElement("div");
     toast.className = "success-toast";
@@ -92,35 +154,52 @@ function showSuccessToast(message) {
     }, 2000);
 }
 
-// lưu
+// ================== SAVE ==================
 saveBtn.addEventListener("click", function () {
     const month = monthInput.value;
-    const money = moneyInput.value;
+    const money = Number(moneyInput.value);
 
     let isValid = true;
 
-    // validate tháng
     if (!month) {
         monthError.innerText = "Vui lòng chọn tháng!";
         isValid = false;
     }
 
-    // validate tiền
-    if (!money) {
-        moneyError.innerText = "Vui lòng nhập số tiền!";
+    if (!moneyInput.value || money <= 0) {
+        moneyError.innerText = "Số tiền phải > 0!";
         isValid = false;
     }
 
     if (!isValid) return;
 
-    // lưu dữ liệu
     let data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
-    data[month] = Number(money);
+
+    if (!data[userLogin.id]) {
+        data[userLogin.id] = {};
+    }
+
+    const allocatedBudget = getAllocatedBudget(month);
+    if (allocatedBudget > money) {
+        moneyError.innerText = "Ngan sach thang phai >= tong danh muc da phan bo!";
+        return;
+    }
+
+    data[userLogin.id][month] = {
+        budget: money,
+        spent: data[userLogin.id][month]?.spent || 0
+    };
+
     localStorage.setItem("monthlyBudget", JSON.stringify(data));
 
-    // hiển thị tiền còn lại (hiện tại = ngân sách)
-    moneyDisplay.innerText = Number(money).toLocaleString() + " VND";
+    loadData();
 
-    // toast thành công
     showSuccessToast("Lưu ngân sách thành công!");
+});
+
+// ================== INIT ==================
+document.addEventListener("DOMContentLoaded", () => {
+    monthInput.value = getSelectedMonth();
+
+    loadData();
 });

@@ -308,6 +308,42 @@ footer {
     animation: fadeIn 0.3s ease;
 }
 
+.summary-title {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: red;
+}
+
+.summary-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-row span:first-child {
+    text-align: left;
+    font-weight: bolder;
+}
+
+.summary-row span:last-child {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* màu cho từng dòng */
+#budgetText {
+    color: #3B82F6;
+}
+
+#spentText {
+    color: #EF4444;
+}
+
+#remainText {
+    color: #22C55E;
+    font-weight: bold;
+}
 @keyframes fadeIn {
     from {opacity: 0; transform: translateY(-10px);}
     to {opacity: 1; transform: translateY(0);}
