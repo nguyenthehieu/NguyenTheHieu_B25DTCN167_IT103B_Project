@@ -22,7 +22,7 @@ function showLogoutToast() {
     toast.innerHTML = `
         <img src="../assets/icon/image 2.png" alt="">
         <h3>Xac nhan</h3>
-        <p>Banj có chắc chắn muốn đăng xuất ?</p>
+        <p>Bạn có chắc chắn muốn đăng xuất ?</p>
         <hr>
         <div class="toast-actions">
             <button class="cancel-btn">Hủy</button>
@@ -345,7 +345,7 @@ function loadCategories() {
 
         const option = document.createElement("option");
         option.value = item.categoryId;
-        option.textContent = `${category.name} - con lai ${remain.toLocaleString("vi-VN")} VND`;
+        option.textContent = `${category.name} - còn lại ${remain.toLocaleString("vi-VN")} VND`;
         categorySelect.appendChild(option);
     });
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Tài Chính</title>
+    <title>Quan Ly Tai Chinh</title>
     <link rel="stylesheet" href="../css/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -13,25 +13,20 @@
     <main>
         <header>
             <h3>📒 Tài Chính Cá Nhân K25_Rikkei</h3>
-            <select name="" id="accountSelect">
+            <select id="accountSelect">
                 <option value="">Tài khoản</option>
                 <option value="logout">Đăng xuất</option>
             </select>
         </header>
         <div class="banner">
             <div class="choice">
-                <a class="information" href="./index.html" class="information"><i class="bi bi-info-circle"></i>
-                    Information</a>
+                <a class="information" href="./index.html"><i class="bi bi-info-circle"></i> Information</a>
                 <a href="./category.html"><i class="bi bi-bounding-box"></i> Category</a>
                 <a href="./history.html"><i class="bi bi-clock-history"></i> History</a>
             </div>
             <div class="main-title">
-                <h1>
-                    🎯 Kiểm soát chi tiêu thông minh
-                </h1>
-                <p>
-                    Theo dõi ngân sách và thu chi hằng tháng dễ dàng
-                </p>
+                <h1>🎯 Kiểm soát chi tiêu thông minh</h1>
+                <p>Theo dõi ngân sách và thu chi hằng tháng dễ dàng</p>
             </div>
         </div>
 
@@ -43,20 +38,23 @@
         </div>
 
         <div class="cell">
-            <label for=""> 📅 Chọn tháng:</label>
-            <input type="month" name="" id="monthIn">
-            <p class="error" id="monthError"></p>
+            <div class="choose-month">
+                <label for="monthIn"> 📅 Chọn tháng:</label>
+                <input type="month" id="monthIn">
+                <p class="error" id="monthError"></p>
+            </div>
+
         </div>
 
         <div class="cell budget-box">
-            <label for="">💰 Ngân sách tháng:</label>
-            <input type="number" id="money" step="1000" min="0" placeholder=" VD: 5000000">
+            <label for="money">💰 Ngân sách tháng:</label>
+            <input type="number" id="money" step="1000" min="0" placeholder="VD: 5000000">
             <p class="error" id="moneyError"></p>
-            <button id="saveBtn">Lưu</button>
+            <button id="saveBtn" type="button">Luu</button>
         </div>
 
         <div class="cell" id="summaryBox" style="display:none;">
-            <p class="summary-title">📊 Tổng quan tháng</p>
+            <p class="summary-title">Tổng quan tháng</p>
 
             <div class="summary-row">
                 <span>Ngân sách:</span>
@@ -78,32 +76,68 @@
                 <span id="remainText">0 VND</span>
             </div>
         </div>
-        
-        <h1 class="title">Quản Lý Thông tin Cá nhân</h1>
-        <form action="" class="form-infor">
-            <label for="name">Name <span>*</span></label>
-            <label for="email">Email <span>*</span></label>
 
-            <input type="text" placeholder="Nguyen Van A" required>
-            <input type="email" name="" id="" placeholder="nguyenvana@gmail.com" required>
+        <h1 class="title">Quản Lý Thông Tin Cá Nhân</h1>
+        <form class="form-infor" id="profileForm">
+            <label for="displayName">Name <span>*</span></label>
+            <label for="displayEmail">Email <span>*</span></label>
 
-            <label for="phone">Phone <span>*</span></label>
-            <label for="gender">Gender <span>*</span></label>
+            <input type="text" id="displayName" placeholder="Nguyen Van A" readonly>
+            <input type="email" id="displayEmail" placeholder="nguyenvana@gmail.com" readonly>
 
-            <input type="tel" placeholder="xxxxxxxxxx" required>
-            <input type="text" placeholder="Male/Female" required>
+            <label for="displayPhone">Phone <span>*</span></label>
+            <label for="displayGender">Gender <span>*</span></label>
 
-            <button>Change Information</button>
-            <button>Change Password</button>
+            <input type="tel" id="displayPhone" placeholder="xxxxxxxxxx" readonly>
+            <input type="text" id="displayGender" placeholder="Male/Female" readonly>
+
+            <button type="button" id="changeInfoBtn">Change Information</button>
+            <button type="button" id="changePasswordBtn">Change Password</button>
         </form>
 
     </main>
     <footer>
-        © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu !
+        © 2026 Quản Lý Tài Chính Cá Nhân. by Nguyen The Hieu!
     </footer>
 
-    <!-- Toast -->
     <div id="toast"></div>
+
+    <div class="modal-overlay hidden" id="profileModal">
+        <div class="profile-modal">
+            <div class="profile-modal-header">
+                <h3>Change Information</h3>
+                <button type="button" class="close-modal" id="closeProfileModal">&times;</button>
+            </div>
+
+            <form id="profileModalForm" class="profile-modal-form">
+                <label for="modalName">Name <span>*</span></label>
+                <input type="text" id="modalName" placeholder="Nguyen Van A" required>
+                <p class="error modal-error" id="modalNameError"></p>
+
+                <label for="modalEmail">Email <span>*</span></label>
+                <input type="email" id="modalEmail" placeholder="nguyenvana@gmail.com" required>
+                <p class="error modal-error" id="modalEmailError"></p>
+
+                <label for="modalPhone">Phone <span>*</span></label>
+                <input type="tel" id="modalPhone" placeholder="0987654321" required>
+                <p class="error modal-error" id="modalPhoneError"></p>
+
+                <label for="modalGender">Gender <span>*</span></label>
+                <select id="modalGender" required>
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <p class="error modal-error" id="modalGenderError"></p>
+
+                <div class="profile-modal-actions">
+                    <button type="button" class="modal-cancel-btn" id="cancelProfileModal">Cancel</button>
+                    <button type="submit" class="modal-save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="../js/index.js"></script>
 </body>

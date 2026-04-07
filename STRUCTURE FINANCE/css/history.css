@@ -9,7 +9,6 @@ body {
     display: flex;
     flex-direction: column;
     background-color: whitesmoke;
-    
 }
 
 header {
@@ -66,6 +65,7 @@ header h3 {
     border: 1px solid #4338CA;
     border-radius: 5px;
 }
+
 .information {
     background-color: #4338CA;
     color: white;
@@ -100,12 +100,12 @@ header h3 {
     font-weight: lighter;
     font-size: 24px;
 }
+
 .title {
     text-align: center;
     font-weight: lighter;
     color: #4F46E5;
     margin: 20px;
-
 }
 
 .cell {
@@ -117,8 +117,35 @@ header h3 {
     width: 768px;
 }
 
-.cell label{
+.cell label {
     padding-right: 15px;
+}
+
+.filter-cell {
+    text-align: left;
+}
+
+.filter-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.month-filter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.month-filter input {
+    width: 180px;
+    height: 38px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #F9FAFB;
 }
 
 .cell button {
@@ -140,12 +167,11 @@ header h3 {
     font-size: larger;
     font-weight: lighter;
     padding: 10px;
-;
 }
 
 .cell-adddeal {
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
 }
 
 .cell-adddeal .input-Money {
@@ -209,7 +235,7 @@ header h3 {
 .actions .sort-btn {
     width: 160px;
     height: 38px;
-    background-color:#F9FAFB;
+    background-color: #F9FAFB;
     color: black;
     border: 1px solid rgb(201, 201, 201);
     text-align: left;
@@ -221,9 +247,9 @@ header h3 {
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    width: 159px;
+    width: 220px;
     height: 38px;
-    background-color:#F9FAFB;
+    background-color: #F9FAFB;
     color: black;
 }
 
@@ -250,7 +276,7 @@ th, td {
     padding: 12px;
     text-align: left;
     font-weight: lighter;
-    color:#374151;
+    color: #374151;
 }
 
 tbody tr {
@@ -388,60 +414,9 @@ td i {
     padding: 16px;
     border-radius: 10px;
     width: 586px;
-    height: 276;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     margin-bottom: 10px;
     animation: slideIn 0.5s ease-out;
-}
-
-.toast hr {
-    color: rgba(187, 187, 187, 0.444);
-    width: 518px;
-}
-
-.toast img {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
-}
-
-.toast h3 {
-    margin-bottom: 10px;
-    font-weight: lighter;
-    font-size: 25px;
-}
-
-.toast p {
-    margin-bottom: 12px;
-    color: #667085;
-}
-
-.toast-actions {
-    text-align: right;
-    margin-top: 10px;
-}
-
-.toast button {
-    margin-left: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.confirm-btn {
-    background: #DC2626;
-    color: white;
-    border: none;
-    width: 60px;
-    height: 44px;
-}
-
-.cancel-btn {
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-    border: 1px solid gray;
-    width: 60px;
-    height: 44px;
 }
 
 .toast hr {
@@ -537,7 +512,7 @@ td i {
 
 @media (max-width: 1440px) {
     header {
-        padding: 15px 100px; /* giảm padding */
+        padding: 15px 100px;
     }
 
     .banner {
@@ -547,15 +522,15 @@ td i {
 
 @media (max-width: 768px) {
     header {
-        padding: 15px 20px; /* sát lề mobile */
+        padding: 15px 20px;
         flex-direction: column;
         gap: 10px;
         text-align: center;
     }
 
     .banner {
-        width: 90%; /* full gần màn hình */
-        height: auto; /* tránh bị bó */
+        width: 90%;
+        height: auto;
         padding: 20px;
     }
 
@@ -565,5 +540,38 @@ td i {
 
     .banner p {
         font-size: 14px;
+    }
+
+    .filter-toolbar,
+    .month-filter,
+    .actions,
+    .cell-adddeal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cell,
+    .history-cell {
+        width: 95%;
+    }
+
+    .month-filter input,
+    .actions input,
+    .actions .search-btn,
+    .actions .sort-btn,
+    .cell-adddeal .input-Money,
+    .cell-adddeal select,
+    .cell-adddeal .note-Input,
+    .cell-adddeal button {
+        width: 100%;
+    }
+
+    .history-cell {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .actions {
+        margin-right: 0;
     }
 }

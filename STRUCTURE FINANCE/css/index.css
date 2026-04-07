@@ -106,7 +106,6 @@ header select option {
     font-weight: lighter;
     color: #4F46E5;
     margin: 20px;
-
 }
 
 .cell {
@@ -141,15 +140,14 @@ header select option {
     font-size: larger;
     font-weight: lighter;
     padding: 10px;
-    ;
 }
 
 .budget-box {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto auto;
-    justify-content: center;   
-    align-items: center;    
+    justify-content: center;
+    align-items: center;
     gap: 8px 10px;
 }
 
@@ -182,14 +180,10 @@ header select option {
 .form-infor {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* 2 cột */
-    grid-template-rows: repeat(5, auto);
-    /* 5 dòng */
     gap: 10px;
     margin: 25px auto;
     padding: 25px;
     width: 730px;
-
 }
 
 .form-infor span {
@@ -200,6 +194,11 @@ header select option {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid rgb(198, 198, 198);
+}
+
+.form-infor input[readonly] {
+    background-color: #f8fafc;
+    color: #111827;
 }
 
 .form-infor button {
@@ -235,7 +234,6 @@ footer {
     padding: 16px;
     border-radius: 10px;
     width: 586px;
-    height: 276;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     margin-bottom: 10px;
     animation: slideIn 0.5s ease-out;
@@ -279,7 +277,7 @@ footer {
     background: #FBB01A;
     color: white;
     border: none;
-    width: 60px;
+    width: 85px;
     height: 44px;
 }
 
@@ -331,7 +329,6 @@ footer {
     font-weight: 500;
 }
 
-/* màu cho từng dòng */
 #budgetText {
     color: #3B82F6;
 }
@@ -344,9 +341,126 @@ footer {
     color: #22C55E;
     font-weight: bold;
 }
+
+.hidden {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.profile-modal {
+    width: min(100%, 460px);
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    padding: 18px 18px 16px;
+    animation: fadeIn 0.2s ease;
+}
+
+.profile-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.profile-modal-header h3 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.close-modal {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.profile-modal-form {
+    display: grid;
+    gap: 8px;
+}
+
+.profile-modal-form label {
+    font-size: 14px;
+    color: #111827;
+    font-weight: 600;
+}
+
+.profile-modal-form span {
+    color: #ef4444;
+}
+
+.profile-modal-form input,
+.profile-modal-form select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.profile-modal-form input:focus,
+.profile-modal-form select:focus {
+    border-color: #4F46E5;
+}
+
+.modal-error {
+    min-height: 16px;
+    margin-top: -2px;
+}
+
+.profile-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.profile-modal-actions button {
+    min-width: 92px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.modal-cancel-btn {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #111827;
+}
+
+.modal-save-btn {
+    border: 1px solid #4F46E5;
+    background: #4F46E5;
+    color: #ffffff;
+}
+
 @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-10px);}
-    to {opacity: 1; transform: translateY(0);}
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideIn {
@@ -360,7 +474,6 @@ footer {
         opacity: 1;
     }
 }
-
 
 @media (max-width: 1440px) {
     header {
@@ -398,7 +511,6 @@ footer {
         text-align: center;
     }
 
-
     .choice {
         flex-direction: column;
         align-items: center;
@@ -423,7 +535,6 @@ footer {
         font-size: 13px;
     }
 
-
     .cell {
         width: 95%;
         padding: 15px;
@@ -439,13 +550,28 @@ footer {
         width: 100%;
     }
 
-    /* FORM */
     .form-infor {
         grid-template-columns: 1fr;
         width: 95%;
     }
 
     .form-infor button {
+        width: 100%;
+    }
+
+    .profile-modal {
+        padding: 16px;
+    }
+
+    .profile-modal-header h3 {
+        font-size: 24px;
+    }
+
+    .profile-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .profile-modal-actions button {
         width: 100%;
     }
 

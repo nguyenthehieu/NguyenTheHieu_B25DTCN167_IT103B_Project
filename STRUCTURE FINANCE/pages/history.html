@@ -12,7 +12,7 @@
 <body>
     <main>
         <header>
-            <h3>Tài Chính Cá Nhân K25_Rikkei</h3>
+            <h3>📒 Tài Chính Cá Nhân K25_Rikkei</h3>
             <select name="" id="accountSelect">
                 <option value="">Tài khoản</option>
                 <option value="logout">Đăng xuất</option>
@@ -25,21 +25,25 @@
                 <a href="./history.html" class="history"><i class="bi bi-clock-history"></i> History</a>
             </div>
             <div class="main-title">
-                <h1>Kiểm soát chi tiêu thông minh</h1>
+                <h1>🎯 Kiểm soát chi tiêu thông minh</h1>
                 <p>Theo dõi ngân sách và thu chi hàng tháng dễ dàng</p>
             </div>
         </div>
 
-        <h1 class="title">Quản Lý Tài Chính Cá Nhân</h1>
+        <h1 class="title">📊 Quản Lý Tài Chính Cá Nhân</h1>
 
         <div class="cell">
             <p>Số tiền còn lại</p>
             <h3>0 VND</h3>
         </div>
 
-        <div class="cell">
-            <label for="monthIn">Chọn tháng:</label>
-            <input type="month" name="" id="monthIn">
+        <div class="cell filter-cell">
+            <div class="filter-toolbar">
+                <div class="month-filter">
+                    <label for="monthIn">📅 Chọn tháng:</label>
+                    <input type="month" id="monthIn">
+                </div>
+            </div>
         </div>
 
         <div class="cell">
@@ -58,7 +62,7 @@
                 <h2 class="title-history">Lịch sử giao dịch (theo tháng)</h2>
 
                 <div class="actions">
-                    <button class="sort-btn" id="sortBtn" type="button">So tien: giam dan</button>
+                    <button class="sort-btn" id="sortBtn" type="button">Số tiền: giảm dần</button>
                     <input type="text" placeholder="Tìm nội dung" id="searchInput">
                     <button class="search-btn" id="searchBtn" type="button">
                         <i class="bi bi-search"></i>
@@ -95,3 +99,5 @@
 </body>
 
 </html>
+
+

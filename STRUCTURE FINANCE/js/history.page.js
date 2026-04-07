@@ -350,6 +350,7 @@ function loadCategories() {
 function getFilteredTransactions() {
     const month = monthInput.value;
     const keyword = searchInput.value.trim().toLowerCase();
+    const categories = getCategories();
 
     return getTransactions()
         .filter(transaction => {
@@ -361,8 +362,10 @@ function getFilteredTransactions() {
                 return true;
             }
 
-            const note = (transaction.note || "").toLowerCase();
-            return note.includes(keyword);
+            const category = categories.find(c => c.id === transaction.categoryId);
+            const categoryName = category ? category.name.toLowerCase() : "";
+
+            return categoryName.includes(keyword);
         })
         .sort((a, b) => sortDirection === "asc" ? a.amount - b.amount : b.amount - a.amount);
 }
