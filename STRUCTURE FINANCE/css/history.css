@@ -461,6 +461,14 @@ td i {
     height: 44px;
 }
 
+.delete-confirm-btn {
+    background: #DC2626;
+    color: white;
+    border: none;
+    width: 60px;
+    height: 44px;
+}
+
 .cancel-btn {
     background-color: #ffffff;
     color: rgb(0, 0, 0);

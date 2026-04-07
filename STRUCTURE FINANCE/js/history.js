@@ -4,7 +4,6 @@ if (!userLogin) {
     window.location.href = "../pages/signin.html";
 }
 
-// LOGOUT 
 const selectBox = document.getElementById("accountSelect");
 const toastContainer = document.getElementById("toast");
 
@@ -16,17 +15,19 @@ selectBox.addEventListener("change", function () {
 });
 
 function showLogoutToast() {
+    toastContainer.innerHTML = "";
+
     const toast = document.createElement("div");
     toast.className = "toast";
 
     toast.innerHTML = `
         <img src="../assets/icon/image 2.png" alt="">
         <h3>Xac nhan</h3>
-        <p>Bạn có chắc chắn muốn đăng xuất ?</p>
+        <p>Ban co chac chan muon dang xuat khong?</p>
         <hr>
         <div class="toast-actions">
-            <button class="cancel-btn">Hủy</button>
-            <button class="confirm-btn">Đăng xuất</button>
+            <button class="cancel-btn">Huy</button>
+            <button class="confirm-btn">Dang xuat</button>
         </div>
     `;
 
@@ -42,7 +43,6 @@ function showLogoutToast() {
     };
 }
 
-//  DOM 
 const monthInput = document.getElementById("monthIn");
 const amountInput = document.getElementById("amountInput");
 const categorySelect = document.getElementById("categorySelect");
@@ -151,17 +151,17 @@ function validateTransactionForm() {
     clearTransactionErrors();
 
     if (!month) {
-        monthError.innerText = "Vui lòng chọn tháng";
+        monthError.innerText = "Vui long chon thang";
         isValid = false;
     }
 
     if (!amountInput.value || amount <= 0) {
-        amountError.innerText = "Nhập số tiền và phải lớn hơn 0";
+        amountError.innerText = "So tien phai > 0";
         isValid = false;
     }
 
     if (!categoryId) {
-        categoryError.innerText = "Vui lòng chọn danh mục";
+        categoryError.innerText = "Vui long chon danh muc";
         isValid = false;
     }
 
@@ -210,7 +210,7 @@ function renderWarnings() {
 
             return {
                 key: `${month}-${item.categoryId}`,
-                message: `Danh mục "${category.name}" đã vượt mức chi tiêu: ${spent.toLocaleString("vi-VN")} / ${Number(item.budget || 0).toLocaleString("vi-VN")} VND`
+                message: `Danh muc "${category.name}" da vuot muc chi tieu: ${spent.toLocaleString("vi-VN")} / ${Number(item.budget || 0).toLocaleString("vi-VN")} VND`
             };
         })
         .filter(Boolean);
@@ -322,13 +322,12 @@ function removeWarningToast(key) {
     activeWarningToasts.delete(key);
 }
 
-// LOAD CATEGORIES 
 function loadCategories() {
     const month = monthInput.value;
     const monthlyCategories = getMonthlyCategories();
     const categories = getCategories();
 
-    categorySelect.innerHTML = '<option value="">Danh mục chi tiêu</option>';
+    categorySelect.innerHTML = '<option value="">Danh muc chi tieu</option>';
 
     const userMonthlyCategories = monthlyCategories.filter(
         item => item.month === month && item.userId === userLogin.id
@@ -345,7 +344,7 @@ function loadCategories() {
 
         const option = document.createElement("option");
         option.value = item.categoryId;
-        option.textContent = `${category.name} - còn lại ${remain.toLocaleString("vi-VN")} VND`;
+        option.textContent = `${category.name} - con lai ${remain.toLocaleString("vi-VN")} VND`;
         categorySelect.appendChild(option);
     });
 }
@@ -353,48 +352,109 @@ function loadCategories() {
 function getFilteredTransactions() {
     const month = monthInput.value;
     const keyword = searchInput.value.trim().toLowerCase();
-    const transactions = getTransactions();
     const categories = getCategories();
 
-    return transactions.filter(transaction => {
-        if (transaction.month !== month || transaction.userId !== userLogin.id) {
-            return false;
-        }
+    return getTransactions()
+        .filter(transaction => {
+            if (transaction.month !== month || transaction.userId !== userLogin.id) {
+                return false;
+            }
 
-        if (!keyword) {
-            return true;
-        }
+            if (!keyword) {
+                return true;
+            }
 
-        const category = categories.find(c => c.id === transaction.categoryId);
-        const categoryName = category ? category.name.toLowerCase() : "";
-        const note = (transaction.note || "").toLowerCase();
+            const category = categories.find(c => c.id === transaction.categoryId);
+            const categoryName = category ? category.name.toLowerCase() : "";
 
-        return note.includes(keyword) || categoryName.includes(keyword);
-    });
+            return categoryName.includes(keyword);
+        })
+        .sort((a, b) => sortDirection === "asc" ? a.amount - b.amount : b.amount - a.amount);
 }
 
-// RENDER TRANSACTIONS 
+function updateSortButtonText() {
+    sortBtn.textContent = sortDirection === "asc" ? "So tien: tang dan" : "So tien: giam dan";
+}
+
+function renderPagination(totalItems) {
+    pagination.innerHTML = "";
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+    const prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.innerHTML = '<i class="bi bi-arrow-left"></i>';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener("click", () => {
+        if (currentPage === 1) {
+            return;
+        }
+        currentPage -= 1;
+        renderTransactions();
+    });
+    pagination.appendChild(prevBtn);
+
+    for (let page = 1; page <= totalPages; page++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.type = "button";
+        pageBtn.textContent = page;
+        if (page === currentPage) {
+            pageBtn.classList.add("active");
+        }
+        pageBtn.addEventListener("click", () => {
+            currentPage = page;
+            renderTransactions();
+        });
+        pagination.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.innerHTML = '<i class="bi bi-arrow-right"></i>';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener("click", () => {
+        if (currentPage === totalPages) {
+            return;
+        }
+        currentPage += 1;
+        renderTransactions();
+    });
+    pagination.appendChild(nextBtn);
+}
+
 function renderTransactions() {
     const categories = getCategories();
     const filtered = getFilteredTransactions();
     const keyword = searchInput.value.trim();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const paginatedTransactions = filtered.slice(startIndex, startIndex + PAGE_SIZE);
 
     tableBody.innerHTML = "";
 
     if (filtered.length === 0) {
-        const emptyMessage = keyword ? "Không tìm thấy giao dịch phù hợp" : "Chưa có giao dịch";
+        const emptyMessage = keyword ? "Khong tim thay giao dich phu hop" : "Chua co giao dich";
         tableBody.innerHTML = `<tr><td colspan="5">${emptyMessage}</td></tr>`;
+        renderPagination(0);
         return;
     }
 
-    filtered.forEach((transaction, index) => {
+    paginatedTransactions.forEach((transaction, index) => {
         const category = categories.find(c => c.id === transaction.categoryId);
         const categoryName = category ? category.name : "Unknown";
-        const noteText = transaction.note ? transaction.note : "Không có ghi chú";
+        const noteText = transaction.note ? transaction.note : "Khong co ghi chu";
 
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${index + 1}</td>
+            <td>${startIndex + index + 1}</td>
             <td>${categoryName}</td>
             <td>${transaction.amount.toLocaleString("vi-VN")} VND</td>
             <td>${noteText}</td>
@@ -402,30 +462,33 @@ function renderTransactions() {
         `;
         tableBody.appendChild(row);
     });
+
+    renderPagination(filtered.length);
 }
 
 function showDeleteTransactionToast(id) {
+    toastContainer.innerHTML = "";
+
     const toast = document.createElement("div");
     toast.className = "toast";
 
     toast.innerHTML = `
         <img src="../assets/icon/image 2.png" alt="">
-        <h3>Xác nhận</h3>
-        <p>Bạn có chắc chắn muốn xóa giao dịch này không ?</p>
+        <h3>Xac nhan</h3>
+        <p>Ban co chac chan muon xoa giao dich nay khong?</p>
         <hr>
         <div class="toast-actions">
-            <button class="cancel-btn">Hủy</button>
-            <button class="confirm-btn">Xóa</button>
+            <button class="cancel-btn">Huy</button>
+            <button class="delete-confirm-btn">Xoa</button>
         </div>
     `;
 
     toastContainer.appendChild(toast);
 
-    toast.querySelector(".confirm-btn").onclick = () => {
+    toast.querySelector(".delete-confirm-btn").onclick = () => {
         let transactions = getTransactions();
         let monthlyBudget = getMonthlyBudget();
         let monthlyCategories = getMonthlyCategories();
-        const month = monthInput.value;
         const transaction = transactions.find(item => item.id === id);
 
         if (!transaction) {
@@ -433,24 +496,26 @@ function showDeleteTransactionToast(id) {
             return;
         }
 
+        const transactionMonth = transaction.month;
+
         if (!monthlyBudget[userLogin.id]) {
             monthlyBudget[userLogin.id] = {};
         }
 
-        if (!monthlyBudget[userLogin.id][month]) {
-            monthlyBudget[userLogin.id][month] = { budget: 0, spent: 0 };
+        if (!monthlyBudget[userLogin.id][transactionMonth]) {
+            monthlyBudget[userLogin.id][transactionMonth] = { budget: 0, spent: 0 };
         }
 
-        monthlyBudget[userLogin.id][month].spent = Math.max(
+        monthlyBudget[userLogin.id][transactionMonth].spent = Math.max(
             0,
-            (monthlyBudget[userLogin.id][month].spent || 0) - transaction.amount
+            (monthlyBudget[userLogin.id][transactionMonth].spent || 0) - transaction.amount
         );
 
         transactions = transactions.filter(item => item.id !== id);
 
         const hasCategoryTransactions = transactions.some(
             item =>
-                item.month === month &&
+                item.month === transactionMonth &&
                 item.userId === userLogin.id &&
                 item.categoryId === transaction.categoryId
         );
@@ -459,7 +524,7 @@ function showDeleteTransactionToast(id) {
             monthlyCategories = monthlyCategories.filter(
                 item =>
                     !(
-                        item.month === month &&
+                        item.month === transactionMonth &&
                         item.userId === userLogin.id &&
                         item.categoryId === transaction.categoryId
                     )
@@ -482,7 +547,6 @@ function showDeleteTransactionToast(id) {
     };
 }
 
-// ADD TRANSACTION 
 addTransactionBtn.addEventListener("click", function () {
     const month = monthInput.value;
     const amount = Number(amountInput.value);
@@ -539,21 +603,22 @@ addTransactionBtn.addEventListener("click", function () {
     categorySelect.value = "";
     noteInput.value = "";
     clearTransactionErrors();
+    currentPage = 1;
 
     loadRemainingBudget();
     loadCategories();
     renderTransactions();
     renderWarnings();
-});
+}
+);
 
-// DELETE TRANSACTION 
 function deleteTransaction(id) {
     showDeleteTransactionToast(id);
 }
 
-//INIT 
 document.addEventListener("DOMContentLoaded", () => {
     monthInput.value = getSelectedMonth();
+    updateSortButtonText();
 
     loadRemainingBudget();
     loadCategories();
@@ -564,6 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
 monthInput.addEventListener("change", () => {
     setSelectedMonth(monthInput.value);
     monthError.innerText = "";
+    currentPage = 1;
     loadRemainingBudget();
     loadCategories();
     renderTransactions();
@@ -582,5 +648,19 @@ categorySelect.addEventListener("change", () => {
     categoryError.innerText = "";
 });
 
-searchBtn.addEventListener("click", renderTransactions);
-searchInput.addEventListener("input", renderTransactions);
+sortBtn.addEventListener("click", () => {
+    sortDirection = sortDirection === "asc" ? "desc" : "asc";
+    updateSortButtonText();
+    currentPage = 1;
+    renderTransactions();
+});
+
+searchBtn.addEventListener("click", () => {
+    currentPage = 1;
+    renderTransactions();
+});
+
+searchInput.addEventListener("input", () => {
+    currentPage = 1;
+    renderTransactions();
+});
