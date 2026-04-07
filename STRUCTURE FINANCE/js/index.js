@@ -1,3 +1,4 @@
+// Bảo vệ trang chủ: chưa đăng nhập thì đưa về trang sign in.
 const userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
 if (!userLogin) {
@@ -36,6 +37,7 @@ const modalPhoneError = document.getElementById("modalPhoneError");
 const modalGenderError = document.getElementById("modalGenderError");
 const SELECTED_MONTH_KEY = "selectedMonth";
 
+// Dropdown tài khoản hiện mới dùng cho thao tác đăng xuất.
 selectBox.addEventListener("change", function () {
     if (this.value === "logout") {
         showLogoutToast();
@@ -43,6 +45,7 @@ selectBox.addEventListener("change", function () {
     }
 });
 
+// Hiển thị hộp xác nhận trước khi xóa phiên đăng nhập.
 function showLogoutToast() {
     const toast = document.createElement("div");
     toast.className = "toast";
@@ -71,6 +74,7 @@ function showLogoutToast() {
     };
 }
 
+// Ghi nhớ tháng đang chọn để đồng bộ dữ liệu giữa các trang.
 function getDefaultMonth() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -84,6 +88,7 @@ function setSelectedMonth(month) {
     localStorage.setItem(SELECTED_MONTH_KEY, month);
 }
 
+// Các hàm get* đóng vai trò đọc dữ liệu từ localStorage để tái sử dụng ở nhiều nơi.
 function getMonthlyCategories() {
     return JSON.parse(localStorage.getItem("monthlyCategories")) || [];
 }
@@ -107,6 +112,7 @@ function getAllocatedBudget(month) {
         .reduce((total, item) => total + Number(item.budget || 0), 0);
 }
 
+// Tóm tắt ngân sách tháng: tổng ngân sách, đã chi, đã phân bổ và còn lại.
 function renderSummary(month) {
     const data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
     const userData = data[userLogin.id] || {};
@@ -129,6 +135,7 @@ function renderSummary(month) {
     summaryBox.style.display = "block";
 }
 
+// Nạp dữ liệu ngân sách của tháng hiện tại lên form và khu vực tổng quan.
 function loadData() {
     const month = monthInput.value;
     const data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
@@ -149,6 +156,7 @@ function loadData() {
     }
 }
 
+// Render thông tin hồ sơ người dùng ra các ô chỉ đọc trên trang chính.
 function renderUserProfile() {
     const currentUser = getCurrentUser();
 
@@ -158,6 +166,7 @@ function renderUserProfile() {
     displayGender.value = getProfileValue(currentUser.gender, "Chua cap nhat");
 }
 
+// Điền sẵn dữ liệu hiện tại vào modal trước khi người dùng chỉnh sửa.
 function fillProfileModal() {
     const currentUser = getCurrentUser();
 
@@ -206,6 +215,7 @@ function closeModal() {
     profileModal.classList.add("hidden");
 }
 
+// Toast ngắn dùng để báo thành công sau khi lưu dữ liệu.
 function showSuccessToast(message) {
     const toast = document.createElement("div");
     toast.className = "success-toast";
@@ -226,6 +236,7 @@ function isValidPhone(phone) {
     return /^\d{9,11}$/.test(phone);
 }
 
+// Xóa lỗi ngay khi người dùng sửa dữ liệu đầu vào.
 monthInput.addEventListener("input", () => {
     monthError.innerText = "";
 });
@@ -234,6 +245,7 @@ moneyInput.addEventListener("input", () => {
     moneyError.innerText = "";
 });
 
+// Đổi tháng sẽ nạp lại toàn bộ dữ liệu ngân sách theo tháng đó.
 monthInput.addEventListener("change", () => {
     setSelectedMonth(monthInput.value);
     loadData();
@@ -254,6 +266,7 @@ profileModal.addEventListener("click", (event) => {
     input.addEventListener("change", () => clearFieldError(input));
 });
 
+// Lưu ngân sách tháng sau khi validate và kiểm tra không nhỏ hơn tổng đã phân bổ.
 saveBtn.addEventListener("click", function () {
     const month = monthInput.value;
     const money = Number(moneyInput.value);
@@ -293,6 +306,7 @@ saveBtn.addEventListener("click", function () {
     showSuccessToast("Luu ngan sach thanh cong!");
 });
 
+// Submit form hồ sơ: validate rồi cập nhật đồng thời users và userLogin.
 profileModalForm.addEventListener("submit", function (event) {
     event.preventDefault();
     clearProfileErrors();
@@ -366,6 +380,7 @@ profileModalForm.addEventListener("submit", function (event) {
     showSuccessToast("Cap nhat thong tin thanh cong!");
 });
 
+// Khi trang tải xong thì khôi phục tháng đang chọn và dữ liệu người dùng.
 document.addEventListener("DOMContentLoaded", () => {
     monthInput.value = getSelectedMonth();
     renderUserProfile();

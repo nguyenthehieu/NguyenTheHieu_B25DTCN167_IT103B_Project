@@ -1,10 +1,11 @@
+// Bảo vệ trang danh mục: chưa đăng nhập thì quay về trang sign in.
 const userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
 if (!userLogin) {
     window.location.href = "../pages/signin.html";
 }
 
-// ================== LOGOUT ==================
+// Nhóm xử lý đăng xuất dùng chung với các trang còn lại.
 const selectBox = document.getElementById("accountSelect");
 const toastContainer = document.getElementById("toast");
 
@@ -42,6 +43,7 @@ function showLogoutToast() {
     };
 }
 
+// Xác nhận trước khi xóa một danh mục đã phân bổ trong tháng.
 function showDeleteToast(id) {
     const toast = document.createElement("div");
     toast.className = "toast";
@@ -75,7 +77,7 @@ function showDeleteToast(id) {
     };
 }
 
-// ================== DOM ==================
+// Các phần tử chính của màn hình quản lý danh mục.
 const monthInput = document.getElementById("monthIn");
 const moneyDisplay = document.querySelector(".cell h3");
 const categoryName = document.getElementById("categoryName");
@@ -87,6 +89,7 @@ const SELECTED_MONTH_KEY = "selectedMonth";
 let isEditing = false;
 let editingId = null;
 
+// Ghi nhớ tháng đang thao tác để đồng bộ giữa các trang.
 function getDefaultMonth() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -124,6 +127,7 @@ categoryMoney.parentNode.insertBefore(inputWrapper, categoryMoney);
 inputWrapper.appendChild(categoryMoney);
 inputWrapper.appendChild(moneyError);
 
+// Các hàm đọc dữ liệu từ localStorage được gom riêng để tránh lặp lại logic parse JSON.
 function getMonthlyCategories() {
     return JSON.parse(localStorage.getItem("monthlyCategories")) || [];
 }
@@ -152,7 +156,7 @@ function getAllocatedBudget(month, excludedMonthlyCategoryId = null) {
         .reduce((total, item) => total + Number(item.budget || 0), 0);
 }
 
-// ================== LOAD NGAN SACH ==================
+// Hiển thị số tiền còn lại của tháng sau khi trừ tổng ngân sách đã phân bổ cho danh mục.
 function loadBudget() {
     const month = monthInput.value;
     const data = JSON.parse(localStorage.getItem("monthlyBudget")) || {};
@@ -166,7 +170,7 @@ function loadBudget() {
     }
 }
 
-// ================== RENDER CATEGORY ==================
+// Render danh sách danh mục đã tạo trong tháng hiện tại.
 function renderCategories() {
     const month = monthInput.value;
     const monthlyCategories = getMonthlyCategories();
@@ -215,6 +219,7 @@ function renderCategories() {
     });
 }
 
+// Validate form thêm/sửa danh mục trước khi lưu.
 function validate() {
     let isValid = true;
 
@@ -243,7 +248,7 @@ categoryMoney.addEventListener("input", () => {
     moneyError.innerText = "";
 });
 
-// ================== THEM/SUA CATEGORY ==================
+// Nút này dùng chung cho cả thêm mới và chỉnh sửa danh mục.
 addCategoryBtn.addEventListener("click", function () {
     const month = monthInput.value;
 
@@ -335,6 +340,7 @@ function deleteCategory(id) {
     showDeleteToast(id);
 }
 
+// Khi bấm sửa, đổ dữ liệu hiện tại lên form và chuyển trạng thái nút sang cập nhật.
 function editCategory(id) {
     const monthlyCategories = getMonthlyCategories();
     const categories = getCategories();
@@ -356,6 +362,7 @@ function editCategory(id) {
     addCategoryBtn.textContent = "Sua danh muc";
 }
 
+// Khôi phục tháng đã chọn và dữ liệu danh mục tương ứng khi vào trang.
 document.addEventListener("DOMContentLoaded", () => {
     monthInput.value = getSelectedMonth();
     loadBudget();

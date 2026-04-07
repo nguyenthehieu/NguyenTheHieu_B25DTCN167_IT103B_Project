@@ -1,3 +1,4 @@
+// Bảo vệ trang lịch sử: nếu chưa đăng nhập thì chuyển về trang sign in.
 const userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
 if (!userLogin) {
@@ -7,6 +8,7 @@ if (!userLogin) {
 const selectBox = document.getElementById("accountSelect");
 const toastContainer = document.getElementById("toast");
 
+// Dropdown tài khoản đang dùng cho thao tác đăng xuất.
 selectBox.addEventListener("change", function () {
     if (this.value === "logout") {
         showLogoutToast();
@@ -14,6 +16,7 @@ selectBox.addEventListener("change", function () {
     }
 });
 
+// Hiển thị toast xác nhận trước khi xóa phiên đăng nhập.
 function showLogoutToast() {
     toastContainer.innerHTML = "";
 
@@ -23,7 +26,7 @@ function showLogoutToast() {
     toast.innerHTML = `
         <img src="../assets/icon/image 2.png" alt="">
         <h3>Xac nhan</h3>
-        <p>Ban co chac chan muon dang xuat khong?</p>
+        <p>Bạn có chắc chắn muốn đăng xuất không ?</p>
         <hr>
         <div class="toast-actions">
             <button class="cancel-btn">Huy</button>
@@ -62,6 +65,7 @@ const PAGE_SIZE = 5;
 let currentPage = 1;
 let sortDirection = "desc";
 
+// Bọc input/select bằng một wrapper để hiển thị lỗi ngay bên dưới trường dữ liệu.
 function createFieldError(element) {
     const wrapper = document.createElement("div");
     wrapper.style.display = "flex";
@@ -95,6 +99,7 @@ const monthError = createFieldError(monthInput);
 const amountError = createFieldError(amountInput);
 const categoryError = createFieldError(categorySelect);
 
+// Ghi nhớ tháng đang xem để đồng bộ giữa các trang.
 function getDefaultMonth() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -108,6 +113,7 @@ function setSelectedMonth(month) {
     localStorage.setItem(SELECTED_MONTH_KEY, month);
 }
 
+// Các hàm get* chỉ đọc dữ liệu từ localStorage để tái sử dụng cho toàn trang.
 function getTransactions() {
     return JSON.parse(localStorage.getItem("transactions")) || [];
 }
@@ -124,6 +130,7 @@ function getMonthlyBudget() {
     return JSON.parse(localStorage.getItem("monthlyBudget")) || {};
 }
 
+// Tính tổng số tiền đã chi trong một danh mục của tháng hiện tại.
 function getCategorySpent(month, categoryId) {
     return getTransactions()
         .filter(item => item.month === month && item.userId === userLogin.id && item.categoryId === categoryId)
@@ -136,12 +143,14 @@ function getAllocatedBudget(month) {
         .reduce((total, item) => total + Number(item.budget || 0), 0);
 }
 
+// Reset lỗi của form thêm giao dịch trước mỗi lần validate.
 function clearTransactionErrors() {
     monthError.innerText = "";
     amountError.innerText = "";
     categoryError.innerText = "";
 }
 
+// Validate đủ tháng, số tiền và danh mục trước khi cho phép thêm giao dịch.
 function validateTransactionForm() {
     const month = monthInput.value;
     const amount = Number(amountInput.value);
@@ -168,10 +177,13 @@ function validateTransactionForm() {
     return isValid;
 }
 
+// Tiền còn lại ở đây là ngân sách tháng trừ tổng số tiền đã phân bổ cho các danh mục.
 function loadRemainingBudget() {
     const month = monthInput.value;
+    // Lấy toàn bộ ngân sách đã lưu, sau đó chỉ lấy phần của user hiện tại.
     const monthlyBudget = getMonthlyBudget();
     const userBudget = monthlyBudget[userLogin.id] || {};
+    // monthData là dữ liệu ngân sách của đúng tháng đang chọn.
     const monthData = userBudget[month];
 
     if (!monthData) {
@@ -183,23 +195,29 @@ function loadRemainingBudget() {
     moneyDisplay.innerText = remain.toLocaleString("vi-VN") + " VND";
 }
 
+// Tạo cảnh báo nếu một danh mục đã chi vượt quá ngân sách được phân bổ.
 function renderWarnings() {
     const month = monthInput.value;
+    // Lấy danh sách category gốc để đổi categoryId thành tên danh mục khi hiển thị cảnh báo.
     const categories = getCategories();
+    // Chỉ lấy các danh mục đã phân bổ của đúng tháng và đúng user hiện tại.
     const monthlyCategories = getMonthlyCategories().filter(
         item => item.month === month && item.userId === userLogin.id
     );
+    // Chỉ lấy các giao dịch phát sinh trong tháng đang xem của user hiện tại.
     const transactions = getTransactions().filter(
         item => item.month === month && item.userId === userLogin.id
     );
 
     const warningMessages = monthlyCategories
         .map(item => {
+            // Từ categoryId của monthlyCategories, tìm lại thông tin category đầy đủ.
             const category = categories.find(c => c.id === item.categoryId);
             if (!category) {
                 return null;
             }
 
+            // Tính tổng tiền đã chi của riêng danh mục này trong tháng hiện tại.
             const spent = transactions
                 .filter(transaction => transaction.categoryId === item.categoryId)
                 .reduce((total, transaction) => total + Number(transaction.amount || 0), 0);
@@ -228,6 +246,7 @@ function renderWarnings() {
     });
 }
 
+// Nếu toast cảnh báo đã tồn tại thì cập nhật nội dung, nếu chưa có thì tạo mới.
 function upsertWarningToast(key, message, index) {
     const existingToast = activeWarningToasts.get(key);
 
@@ -249,7 +268,7 @@ function upsertWarningToast(key, message, index) {
     toast.innerHTML = `
         <div class="warning-toast-title">
             <img src="../assets/icon/warning.png" alt="">
-            <span>Canh bao tai chinh</span>
+            <span>Cảnh báo tài chính</span>
         </div>
         <p></p>
         <div class="warning-toast-progress"></div>
@@ -275,6 +294,7 @@ function upsertWarningToast(key, message, index) {
     resetWarningToastTimer(key);
 }
 
+// Mỗi toast cảnh báo tự biến mất sau 5 giây nếu không có thay đổi mới.
 function resetWarningToastTimer(key) {
     const toastData = activeWarningToasts.get(key);
     if (!toastData) {
@@ -290,6 +310,7 @@ function resetWarningToastTimer(key) {
     }, 5000);
 }
 
+// Ép reflow để animation progress chạy lại từ đầu.
 function restartWarningToastProgress(progressElement) {
     if (!progressElement) {
         return;
@@ -322,9 +343,12 @@ function removeWarningToast(key) {
     activeWarningToasts.delete(key);
 }
 
+// Chỉ load các danh mục của tháng hiện tại để người dùng chọn khi thêm giao dịch.
 function loadCategories() {
     const month = monthInput.value;
+    // Dữ liệu monthlyCategories dùng để biết tháng này user đã được gán những danh mục nào.
     const monthlyCategories = getMonthlyCategories();
+    // Dữ liệu categories dùng để lấy tên danh mục tương ứng với categoryId.
     const categories = getCategories();
 
     categorySelect.innerHTML = '<option value="">Danh muc chi tieu</option>';
@@ -334,6 +358,7 @@ function loadCategories() {
     );
 
     userMonthlyCategories.forEach(item => {
+        // Tìm category gốc để hiển thị tên danh mục trong option.
         const category = categories.find(c => c.id === item.categoryId);
         if (!category || !category.status) {
             return;
@@ -349,13 +374,16 @@ function loadCategories() {
     });
 }
 
+// Lọc theo tháng, user hiện tại và từ khóa; sau đó mới sắp xếp theo số tiền.
 function getFilteredTransactions() {
     const month = monthInput.value;
     const keyword = searchInput.value.trim().toLowerCase();
+    // Lấy categories để map categoryId sang tên danh mục phục vụ tìm kiếm.
     const categories = getCategories();
 
     return getTransactions()
         .filter(transaction => {
+            // Chỉ giữ lại giao dịch thuộc tháng đang chọn và thuộc user hiện tại.
             if (transaction.month !== month || transaction.userId !== userLogin.id) {
                 return false;
             }
@@ -364,6 +392,7 @@ function getFilteredTransactions() {
                 return true;
             }
 
+            // Từ categoryId trong transaction, tìm tên category để so khớp từ khóa tìm kiếm.
             const category = categories.find(c => c.id === transaction.categoryId);
             const categoryName = category ? category.name.toLowerCase() : "";
 
@@ -376,6 +405,7 @@ function updateSortButtonText() {
     sortBtn.textContent = sortDirection === "asc" ? "So tien: tang dan" : "So tien: giam dan";
 }
 
+// Phân trang danh sách giao dịch để bảng không quá dài.
 function renderPagination(totalItems) {
     pagination.innerHTML = "";
 
@@ -425,7 +455,9 @@ function renderPagination(totalItems) {
     pagination.appendChild(nextBtn);
 }
 
+// Render bảng giao dịch theo kết quả lọc, sắp xếp và phân trang hiện tại.
 function renderTransactions() {
+    // Lấy categories để đổi categoryId trong giao dịch thành tên danh mục hiển thị trên bảng.
     const categories = getCategories();
     const filtered = getFilteredTransactions();
     const keyword = searchInput.value.trim();
@@ -448,6 +480,7 @@ function renderTransactions() {
     }
 
     paginatedTransactions.forEach((transaction, index) => {
+        // Mỗi giao dịch chỉ lưu categoryId nên cần tìm lại tên danh mục từ bảng categories.
         const category = categories.find(c => c.id === transaction.categoryId);
         const categoryName = category ? category.name : "Unknown";
         const noteText = transaction.note ? transaction.note : "Khong co ghi chu";
@@ -466,6 +499,7 @@ function renderTransactions() {
     renderPagination(filtered.length);
 }
 
+// Xác nhận trước khi xóa giao dịch để tránh thao tác nhầm.
 function showDeleteTransactionToast(id) {
     toastContainer.innerHTML = "";
 
@@ -486,9 +520,11 @@ function showDeleteTransactionToast(id) {
     toastContainer.appendChild(toast);
 
     toast.querySelector(".delete-confirm-btn").onclick = () => {
+        // Lấy lại toàn bộ dữ liệu liên quan trước khi xóa để cập nhật đồng bộ.
         let transactions = getTransactions();
         let monthlyBudget = getMonthlyBudget();
         let monthlyCategories = getMonthlyCategories();
+        // Tìm đúng giao dịch cần xóa dựa trên id được truyền vào.
         const transaction = transactions.find(item => item.id === id);
 
         if (!transaction) {
@@ -547,6 +583,7 @@ function showDeleteTransactionToast(id) {
     };
 }
 
+// Thêm giao dịch mới và đồng bộ lại ngân sách, danh mục, bảng dữ liệu và cảnh báo.
 addTransactionBtn.addEventListener("click", function () {
     const month = monthInput.value;
     const amount = Number(amountInput.value);
@@ -557,6 +594,7 @@ addTransactionBtn.addEventListener("click", function () {
         return;
     }
 
+    // Lấy dữ liệu hiện có để thêm mới rồi ghi ngược lại vào localStorage.
     let transactions = getTransactions();
     let monthlyBudget = getMonthlyBudget();
     let monthlyCategories = getMonthlyCategories();
@@ -569,6 +607,7 @@ addTransactionBtn.addEventListener("click", function () {
         monthlyBudget[userLogin.id][month] = { budget: 0, spent: 0 };
     }
 
+    // Kiểm tra danh mục này đã từng được gán cho tháng hiện tại chưa.
     const existingMonthlyCategory = monthlyCategories.find(
         item => item.month === month && item.userId === userLogin.id && item.categoryId === categoryId
     );
@@ -616,6 +655,7 @@ function deleteTransaction(id) {
     showDeleteTransactionToast(id);
 }
 
+// Khi trang tải xong thì khôi phục tháng đã chọn và render dữ liệu ban đầu.
 document.addEventListener("DOMContentLoaded", () => {
     monthInput.value = getSelectedMonth();
     updateSortButtonText();
@@ -626,6 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWarnings();
 });
 
+// Các listener bên dưới giúp giao diện phản hồi ngay khi đổi tháng, tìm kiếm hoặc sắp xếp.
 monthInput.addEventListener("change", () => {
     setSelectedMonth(monthInput.value);
     monthError.innerText = "";

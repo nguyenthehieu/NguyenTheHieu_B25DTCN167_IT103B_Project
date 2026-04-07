@@ -1,3 +1,4 @@
+// Trang đăng ký tạo mới tài khoản và lưu trực tiếp vào localStorage.
 let users = JSON.parse(localStorage.getItem("users")) || [];
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -7,6 +8,7 @@ const passwordError = document.getElementById("passwordError");
 const confirmError = document.getElementById("confirmError");
 const button = document.querySelector("button");
 
+// Hai hàm dùng chung để reset hoặc gán lỗi cho từng trường.
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -23,6 +25,7 @@ function setError(input, errorElement, message) {
     errorElement.innerText = message;
 }
 
+// Khi nhấn đăng ký: validate dữ liệu, kiểm tra email trùng rồi mới tạo user mới.
 button.addEventListener("click", function () {
     let email = emailInput.value.trim();
     let password = passwordInput.value.trim();
@@ -84,6 +87,7 @@ button.addEventListener("click", function () {
 });
 
 // nhập lại thì xóa lỗi
+// Xóa lỗi ngay khi người dùng sửa lại dữ liệu.
 emailInput.addEventListener("input", function () {
     clearError(emailInput, emailError);
 });

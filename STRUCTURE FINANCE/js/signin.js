@@ -1,3 +1,4 @@
+// Kiểm tra trạng thái đăng nhập để chặn người dùng đã login quay lại trang sign in.
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const emailError = document.getElementById("emailError");
@@ -10,6 +11,7 @@ if (currentUser) {
     window.location.href = "../pages/index.html";
 }
 
+// Hai hàm dùng chung để hiển thị hoặc xóa lỗi ngay trên ô input.
 function clearError(input, errorElement) {
     input.classList.remove("input-error");
     errorElement.innerText = "";
@@ -20,6 +22,7 @@ function setError(input, errorElement, message) {
     errorElement.innerText = message;
 }
 
+// Khi nhấn đăng nhập: validate dữ liệu, tìm user trong localStorage và lưu phiên đăng nhập.
 button.addEventListener("click", function () {
     let email = emailInput.value.trim();
     let password = passwordInput.value.trim();
@@ -64,7 +67,7 @@ button.addEventListener("click", function () {
     window.location.href = "../pages/index.html";
 });
 
-// ===== CLEAR ERROR =====
+// Xóa lỗi ngay khi người dùng nhập lại dữ liệu.
 emailInput.addEventListener("input", function () {
     clearError(emailInput, emailError);
 });
